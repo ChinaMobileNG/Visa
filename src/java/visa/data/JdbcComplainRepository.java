@@ -13,6 +13,7 @@ import visa.pojo.Complain;
 @Repository
 public class JdbcComplainRepository implements ComplainRepository {
 	private JdbcOperations jdbcOperations;
+	@SuppressWarnings("unused")
 	private NamedParameterJdbcOperations namedParameterJdbcOperations;
 	
 	private final String FIND_ALL_COMPLAINS="select * from complain";

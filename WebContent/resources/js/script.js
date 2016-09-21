@@ -54,3 +54,26 @@ function updatePassword(){
 		}
 	});
 }
+
+$("#submitMessage").click(function(){
+	var messagername = txt1.value;
+	var messagerphone = txt2.value;
+	var message = txt3.value;
+	$.ajax({
+		type:"POST",
+		data:{
+			"messagername":messagername,
+			"messagerphone":messagerphone,
+			"message":message,
+		},
+		dataType:"json",
+		success:function(){
+			alert("留言成功"),
+			window.location.href="./homePage";
+		},
+		error:function(){
+			alert("留言失败"),
+			window.location.reload();
+		}
+	});
+});

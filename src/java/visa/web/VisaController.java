@@ -10,22 +10,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import net.sf.json.JSONObject;
+import visa.data.JdbcMessageRepository;
 import visa.data.JdbcTravellerRepository;
 import visa.data.JdbcVisaCountryRepository;
 import visa.pojo.Country;
+import visa.pojo.Message;
 import visa.pojo.Traveller;
 
 @Controller
 @RequestMapping(value={"/","/visasetting"})
 public class VisaController {
-private JdbcTravellerRepository travellerRepository;
-private JdbcVisaCountryRepository visaCountryRepository;
+	@Autowired
+	private JdbcMessageRepository messageRepository;
+	private JdbcTravellerRepository travellerRepository;
+	private JdbcVisaCountryRepository visaCountryRepository;
 	
 	@Autowired
 	public VisaController(JdbcTravellerRepository travellerRepository,JdbcVisaCountryRepository visaCountryRepository) {
@@ -103,5 +110,41 @@ private JdbcVisaCountryRepository visaCountryRepository;
 		String description = request.getParameter("description");
 		visaCountryRepository.addVisaCountryProcess(countryname, process, description);
 		return "redirect:/visasetting";
+	}
+	
+	@RequestMapping(value="/myprocess",method=RequestMethod.GET)
+	public String myProcess(Model model){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String currentUser = auth.getName();
+		model.addAttribute("traveller", travellerRepository.findTravellerByName(currentUser));
+		return "myprocess";
+	}
+	
+	@RequestMapping(value="/mymessage",method=RequestMethod.GET)
+	public String myMessage(Model model){
+		model.addAttribute("message", new Message());
+		return "mymessage";
+	}
+	
+	@RequestMapping(value="/mymessage",method=RequestMethod.POST)
+	public void Message(HttpServletRequest request,HttpServletResponse response){
+		String messagername = request.getParameter("messagername");
+		String messagerphone = request.getParameter("messagerphone");
+		String message = request.getParameter("message");
+		messageRepository.addMessage(new Message(messagername, messagerphone, message));
+		JSONObject jsonObject = new JSONObject();
+		try {
+			PrintWriter printWriter = response.getWriter();
+			printWriter.print(jsonObject);
+			printWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value="/mycomplain",method=RequestMethod.GET)
+	public String myComplain(Model model){
+		return "mycomplain";
 	}
 }
