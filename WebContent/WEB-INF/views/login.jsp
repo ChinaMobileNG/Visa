@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
-<%@ page session="false" %>
+<%@ page session="true" %>
 <html>
 <head>
 	<title>首页-大连海之韵国际旅行社</title>
@@ -31,7 +31,7 @@
 /*]]>*/
 </script>
 </head>
-<body onload='document.f.username.focus();'>
+<body onload='document.f.username.focus();'> 
 	<s:url value="/login" var="LogIn"></s:url>
 	<form onsubmit="return checkValue()" name="f" method="post" action="${LogIn}">
 	<div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden">
@@ -47,6 +47,13 @@
 				<a href="#" class="close"></a>
 			</div>
 			<div class="bloc center">
+				<div>
+					<font color="red" size="50px">  
+				        <c:if test="${param.failed==true }">  
+				           <div>login failed,try again!</div> 
+				        </c:if>  
+				    </font> 
+				</div>
 				<div class="title">用户登录</div>
 				<div class="content">
 					<div class="cb">

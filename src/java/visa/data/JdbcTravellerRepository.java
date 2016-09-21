@@ -29,6 +29,7 @@ public class JdbcTravellerRepository implements TravellerRepository {
 	private static final String UPDATE_TRAVELLER_PASSWORD="update users set password = ? where username = ? and"
 			+ " password = ?";
 	private static final String GET_PASSWORD="select password from users where username = ?";
+	private static final String FIND_TRAVELLER_BY_NAME = "select * from users where username = ?";
 
 	public JdbcTravellerRepository(JdbcOperations jdbcOperations,
 			NamedParameterJdbcOperations namedParameterJdbcOperations) {
@@ -115,6 +116,26 @@ public class JdbcTravellerRepository implements TravellerRepository {
 	public String getPassword(String username) {
 		// TODO Auto-generated method stub
 		return jdbcOperations.queryForObject(GET_PASSWORD,String.class,username);
+	}
+
+	@Override
+	public Traveller findTravellerByName(String name) {
+		// TODO Auto-generated method stub
+		return jdbcOperations.queryForObject(FIND_TRAVELLER_BY_NAME,(resultSet,rowNum)->{
+			String destination =resultSet.getString("destination");
+			int myProcessCount = visaCountryRepository.getProcessCountByName(destination);
+			Traveller traveller = new Traveller(
+					resultSet.getString("username"),
+					resultSet.getString("sex"),
+					resultSet.getString("phonenum"),
+					resultSet.getString("id"),
+					destination,
+					resultSet.getDate("starttime"),
+					resultSet.getInt("currentstage")
+				);
+			traveller.setMyProcessCount(myProcessCount);
+			return traveller;
+		},name);
 	}
 
 }

@@ -13,4 +13,5 @@ public interface TravellerRepository {
 	void updateTravellerProcess(String username,int process);
 	void updateTravellerPassword(String username,String newPassword,String oldPassword);
 	String getPassword(String username);
+	Traveller findTravellerByName(String name);
 }

@@ -36,33 +36,51 @@
 	<input type="hidden" name="id8_hf_0" id="id8_hf_0">
 </div>
 	<!--SIDEBAR-->
-	<div id="sidebar">
-		<ul>
-			<li class="nosubmenu current"><a href="<s:url value="/"/>"> <img src="img/icons/menu/inbox.png" alt=""> 控制台
-			</a></li>
-			<li class="current"><a href="javascript:void(0)" onclick="microwebtoggle()"><img src="img/icons/menu/layout.png" alt="">
-				微网站管理</a>
-				<ul  id="microwebmanage" style="display: none;">
-					<li><a href="visaprocess">签证进度</a></li>
-					<li><a href="homePage/">主页管理</a></li>
-					<li><a href="flight/">航班查询</a></li>
-					<li><a href="weather/">天气查询</a></li>
-					<li><a href="exchange/">汇率转换</a></li>
-				</ul>
-			</li>
-			<li class=""><a href="javascript:void(0)" onclick="customertoggle()"><img src="img/icons/menu/users.png" alt="">
-				微会员管理</a>
-				<ul id="customermanage" style="display: none;">
-					<li><a href="<s:url value="/complain"/>">投诉管理</a></li>
-					<li><a href="messagePage/">留言管理</a></li>
-				</ul></li>
-		</ul>
-	</div>
+	<security:authorize access="hasRole('ADMIN')">
+		<div id="sidebar">
+			<ul>
+				<li class="nosubmenu current">
+					<a href="<s:url value="/"/>"> 
+						<img src="img/icons/menu/inbox.png" alt="">
+						控制台
+					</a>
+				</li>
+				<li class="current"><a href="javascript:void(0)" onclick="microwebtoggle()"><img src="img/icons/menu/layout.png" alt="">
+					微网站管理</a>
+					<ul  id="microwebmanage" style="display: none;">
+						<li><a href="visaprocess">签证进度</a></li>
+						<li><a href="homePage/">主页管理</a></li>
+						<li><a href="flight/">航班查询</a></li>
+						<li><a href="weather/">天气查询</a></li>
+						<li><a href="exchange/">汇率转换</a></li>
+					</ul>
+				</li>
+				<li class=""><a href="javascript:void(0)" onclick="customertoggle()"><img src="img/icons/menu/users.png" alt="">
+					微会员管理</a>
+					<ul id="customermanage" style="display: none;">
+						<li><a href="<s:url value="/complain"/>">投诉管理</a></li>
+						<li><a href="messagePage/">留言管理</a></li>
+					</ul></li>
+			</ul>
+		</div>
+	</security:authorize>
 	<!--CONTENT-->
 
-	<div id="content" class="white">
+	<div id="content" class="white" 
+	<security:authorize access="hasRole('TRAVELLER')">
+	style="margin: 28px 40px 0px 30px;
+			color: #6D6D6D;
+			padding: 0px 0px 20px;
+			font-size: 12px"
+	</security:authorize> >
 		<h1>
-			<img src="img/icons/dashboard.png" alt=""> 控制台
+			<img src="img/icons/dashboard.png" alt="">
+				<security:authorize access="hasRole('ADMIN')">
+						控制台
+				</security:authorize> 
+				<security:authorize access="hasRole('TRAVELLER')">
+					首页
+				</security:authorize>
 		</h1>
 		<div class="bloc left">
 			<div class="title">快捷入口<a href="#" class="toggle"></a></div>
@@ -70,23 +88,38 @@
 				<div class="center" style="display: block; width: auto;">
 				<security:authorize access="hasRole('ROLE_ADMIN')">
 				<a  class="shortcut" href="<c:url value="/visaprocess"/>"> <img src="img/page.png" alt="" width="48" height="48"> 签证进度</a>
-				</security:authorize>
 				<a href="<c:url value="/visasetting"/>" class="shortcut"> <img src="img/contact.png" alt="" width="48" height="48"> 签证设置</a> 
 				<a href="messagePage/" class="shortcut"> <img src="img/checkin.png" alt="" width="48" height="48"> 留言管理</a> 
 				<a href="<s:url value="/complain"/>" class="shortcut last"> <img src="img/event.png" alt="" width="48" height="48"> 投诉管理</a>
-					<div class="cb"></div>
+				</security:authorize>
+				<security:authorize access="hasRole('TRAVELLER')">
+				<a class="shortcut" href="<c:url value="/myprocess"/>"> <img src="img/page.png" alt="" width="48" height="48"> 我的进度</a> 
+				<a href="<s:url value="/mymessage"/>" class="shortcut"> <img src="img/checkin.png" alt="" width="48" height="48"> 我要留言</a> 
+				<a href="<s:url value="/mycomplain"/>" class="shortcut last"> <img src="img/event.png" alt="" width="48" height="48"> 我要投诉</a>
+				</security:authorize>
+					<div class="cb">
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="bloc right">
 			<div class="title">常用功能<a href="#" class="toggle"></a></div>
 			<div class="content">
-				<a href="homePage/" class="shortcut"> <img src="img/icons/window.png" alt=""> 主页管理
-				</a> <a href="flight/" class="shortcut"> <img src="img/icons/search.png" alt="" width="32" height="32"> 航班查询
-			</a> <a href="weather/" class="shortcut"> <img src="img/icons/chart.png" alt="" width="32" height="32"> 天气查询
-			</a> <a href="exchange/" class="shortcut"> <img src="img/icons/money.png" alt="" width="32" height="32"> 汇率转换
-			</a> <a href="messagePage/" class="shortcut"> <img src="img/icons/posts.png" alt="" width="32" height="32"> 留言管理
-			</a> <a href="<s:url value="/traveller/personalcenter"/>" class="shortcut"> <img src="img/icons/smiley-happy.png" alt="" width="32" height="32">
+			<a href="flight/" class="shortcut"> <img src="img/icons/search.png" alt="" width="32" height="32"> 航班查询
+			</a> 
+			<a href="weather/" class="shortcut"> <img src="img/icons/chart.png" alt="" width="32" height="32"> 天气查询
+			</a> 
+			<a href="exchange/" class="shortcut"> <img src="img/icons/money.png" alt="" width="32" height="32"> 汇率转换
+			</a> 
+			<security:authorize access="hasRole('ADMIN')">
+				<a href="messagePage/" class="shortcut"> <img src="img/icons/posts.png" alt="" width="32" height="32"> 留言管理
+				</a> 
+			</security:authorize>
+			<security:authorize access="hasRole('TRAVELLER')">
+				<a href="messagePage/" class="shortcut"> <img src="img/icons/posts.png" alt="" width="32" height="32"> 我要留言
+				</a> 
+			</security:authorize>
+			<a href="<s:url value="/traveller/personalcenter"/>" class="shortcut"> <img src="img/icons/smiley-happy.png" alt="" width="32" height="32">
 				个人中心
 			</a>
 				<div class="cb"></div>
