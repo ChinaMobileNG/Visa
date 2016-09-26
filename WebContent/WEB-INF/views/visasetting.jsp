@@ -4,6 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <%@ page session="false" %>
 <html>
 <head>
@@ -123,7 +124,7 @@
 								<td><span>${status.index+1}</span></td>
 								<td class="neutral"><a href="#"><span>${country.name}</span></a></td>
 								<td class="good"><span>${country.addDate}</span></td>
-								<td><a onclick="if(confirm('确定删除?')==false)return false;" title="删除该流程" href="./?7-1.ILinkListener-formAddVisaCountry-rptVisaCountry-1-lnkDeleteCountry"><img src="img/icons/actions/delete.png" alt="" id="delete"></a></td>
+								<td><a onclick="if(confirm('确定删除?')==false)return false;" title="删除该流程" href="<s:url value="/visasetting/deletecountry/${country.name }"/>"><img src="img/icons/actions/delete.png" alt="" id="delete"></a></td>
 							</tr>
 						</c:forEach>
 						</tbody>
@@ -150,15 +151,27 @@
 						</thead>
 						<tbody>
 						<tr>
-							<td class="neutral"><span>中国</span><input type="hidden" value="6" name="hiddenCountryId"></td>
+							<td class="neutral">
+							<div class="selector" style="width:70px"  id="uniform-undefined" ><span>流程1</span>
+								<select name="countryselector" style="opacity: 0;" onchange="choosecountry(this)">
+									<option value="NOCOUNTRY">选择国家</option>
+									<option value="China">中国</option>
+									<option value="American">美国</option>
+									<option value="Japan">日本</option>
+									<option value="Thailand">泰国</option>
+									<option value="Indian">印度</option>
+								</select>
+							</div>
+							<input type="hidden" value="6" name="hiddenCountryId">
+							</td>
 							<td><div class="input">
-								<input style="width: 150px;" type="text" autocomplete="off" placeholder="请输入签证流程" id="flow" value="" name="visaProcess">
+								<input style="width: 150px;" type="text" autocomplete="off" placeholder="请输入签证流程"  value="" id="visaProcess">
 							</div></td>
 							<td><div class="input">
-								<input style="width: 200px;" type="text" autocomplete="off" placeholder="请输入流程描述" id="desc" value="" name="description">
+								<input style="width: 200px;" type="text" autocomplete="off" placeholder="请输入流程描述"  value="" id="description">
 							</div></td>
 							<td><div class="submit">
-								<input type="submit" value="添加" name="btnAddVisaType" id="id15">
+								<input type="button" value="添加" name="btnAddVisaType" id="addVisaProcessButton">
 							</div></td>
 						</tr>
 						</tbody>
@@ -203,42 +216,52 @@
 	<input type="hidden" name="id16_hf_0" id="id16_hf_0"></div>
 		<div class="cb">
 		</div>
-		<div class="bloc">
-			<div class="title">
-				<span>中国</span>签证流程
-				<a href="#" class="toggle"></a></div>
-			<div class="content">
-				<table class="noalt">
-					<thead>
-					<tr>
-						<th><em>序号</em></th>
-						<th><em>流程</em></th>
-						<th><em>描述</em></th>
-						<th><em>添加时间</em></th>
-						<th><em>操作</em></th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td><span>1</span></td>
-						<td class="neutral"><span>流程1</span></td>
-						<td class="neutral"><span>描述1</span></td>
-						<td class="good"><span>2016-03-07 16:11:38.0</span></td>
-						<td><a onclick="if(confirm('确定删除?')==false)return false;" title="删除该流程" href="./?7-1.ILinkListener-formVisaType-rptVisaType-1-lnkDelVisaType"><img src="img/icons/actions/delete.png" alt="" id="delete"> </a></td>
-					</tr><tr>
-						<td><span>2</span></td>
-						<td class="neutral"><span>结束</span></td>
-						<td class="neutral"><span>结束</span></td>
-						<td class="good"><span>2016-03-07 16:12:13.0</span></td>
-						<td><a onclick="if(confirm('确定删除?')==false)return false;" title="删除该流程" href="./?7-1.ILinkListener-formVisaType-rptVisaType-2-lnkDelVisaType"><img src="img/icons/actions/delete.png" alt="" id="delete"> </a></td>
-					</tr>
-					</tbody>
-				</table>
-				<div class="cb"></div>
+		<c:forEach items="${countries }" var="country" varStatus="status">
+			<div class="bloc">
+				<div class="title">
+					<span>${country.name }</span>签证流程
+					<a href="#" class="toggle"></a></div>
+				<div class="content">
+					<table class="noalt">
+						<thead>
+						<tr>
+							<th><em>序号</em></th>
+							<th><em>流程</em></th>
+							<th><em>描述</em></th>
+							<th><em>添加时间</em></th>
+							<th><em>操作</em></th>
+						</tr>
+						</thead>
+						<tbody>
+						<c:forEach items="${country.processes }" var="process" varStatus="status">
+							<tr>
+								<td><span>${status.index+1 }</span></td>
+								<td class="neutral"><span>${process }</span></td>
+								<td class="neutral"><span>
+								<c:choose>
+									<c:when test="${process==1 }">
+										开始办理
+									</c:when>
+									<c:when test="${process!=1 && !status.last }">
+										流程${process-1 }
+									</c:when>
+									<c:when test="${status.last }">
+										办理结束
+									</c:when>
+								</c:choose>
+								</span></td>
+								<td class="good"><span>${country.addDate }</span></td>
+								<td><a onclick="if(confirm('确定删除?')==false)return false;" title="删除该流程" href="./?7-1.ILinkListener-formVisaType-rptVisaType-2-lnkDelVisaType"><img src="img/icons/actions/delete.png" alt="" id="delete"> </a></td>
+							</tr>
+						</c:forEach>
+						</tbody>
+					</table>
+					<div class="cb"></div>
+				</div>
 			</div>
-		</div>
+		</c:forEach>
 	</form>
 </div>
-
-
+<script type="text/javascript" src="<s:url value="/resources/js/script.js"/>">
+</script>
 </body></html>

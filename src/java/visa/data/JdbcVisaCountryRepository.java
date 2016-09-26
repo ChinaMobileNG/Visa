@@ -1,6 +1,7 @@
 package visa.data;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public class JdbcVisaCountryRepository implements VisaCountryRepository {
 			+ " values(:countryname,:process,:description,:adddate)";
 	private final String FIND_ALL_VISA_COUNTRY_WITH_ADD_DATE = "select * from country where process = 0";
 	private final String GET_VISA_COUNTRY_PROCESS_COUNT="select count(1) from country where countryname = ?";
+	private final String DELTE_VISA_COUNTRY_BY_NAME="delete from country where countryname = ?";
+	
 	
 	@Autowired
 	public JdbcVisaCountryRepository(JdbcOperations jdbcOperations,NamedParameterJdbcOperations namedParameterJdbcOperations) {
@@ -49,7 +52,7 @@ public class JdbcVisaCountryRepository implements VisaCountryRepository {
 	@Override
 	public void deleteVisaCountry(String countryname) {
 		// TODO Auto-generated method stub
-
+		jdbcOperations.update(DELTE_VISA_COUNTRY_BY_NAME, countryname);
 	}
 
 	@Override
@@ -72,11 +75,16 @@ public class JdbcVisaCountryRepository implements VisaCountryRepository {
 			Timestamp addDate = resultSet.getTimestamp("adddate");
 			String description = resultSet.getString("description");
 			int processCount = getProcessCountByName(countryname);
+			List<Integer> processes = new ArrayList<>();
+			for(int i=1;i<=processCount;i++){
+				processes.add(i);
+			}
 			System.out.println("processCount="+processCount);
 			return new Country(countryname,
 					addDate,
 					description,
-					processCount
+					processCount,
+					processes
 					);
 		});
 	}
