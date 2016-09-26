@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -105,9 +106,10 @@ public class VisaController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String countryname="China";
-		int process = Integer.valueOf(request.getParameter("visaProcess"));
+		String countryname=request.getParameter("countryname");
+		int process = Integer.valueOf(request.getParameter("visaprocess"));
 		String description = request.getParameter("description");
+		System.out.println(countryname+" "+process+" "+description);
 		visaCountryRepository.addVisaCountryProcess(countryname, process, description);
 		return "redirect:/visasetting";
 	}
@@ -146,5 +148,11 @@ public class VisaController {
 	@RequestMapping(value="/mycomplain",method=RequestMethod.GET)
 	public String myComplain(Model model){
 		return "mycomplain";
+	}
+	
+	@RequestMapping(value="/deletecountry/{countryname}",method=RequestMethod.GET)
+	public String deleteCountry(@PathVariable("countryname")String countryname){
+		visaCountryRepository.deleteVisaCountry(countryname);
+		return "redirect:/visasetting";
 	}
 }

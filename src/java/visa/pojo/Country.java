@@ -7,8 +7,16 @@ public class Country {
 
 	private String name ;
 	
-	private List<Integer> process;
+	private List<Integer> processes;
 	
+	public List<Integer> getProcesses() {
+		return processes;
+	}
+
+	public void setProcesses(List<Integer> processes) {
+		this.processes = processes;
+	}
+
 	private int processCount;
 	
 	public int getProcessCount() {
@@ -47,13 +55,13 @@ public class Country {
 		this.name = name;
 	}
 
-	public void setProcess(List<Integer> process) {
-		this.process = process;
+	public void setProcess(List<Integer> processes) {
+		this.processes = processes;
 	}
 	
 	public List<Integer> getProcess() {
 		// TODO Auto-generated method stub
-		return process;
+		return processes;
 	}
 	
 	public Country(){
@@ -71,10 +79,12 @@ public class Country {
 		this.name=name;
 	}
 	
-	public Country(String name,Timestamp addDate,String description,int processCount){
+	public Country(String name,Timestamp addDate,String description,
+			int processCount,List<Integer> processes){
 		this.addDate=addDate;
 		this.description=description;
 		this.name=name;
 		this.processCount=processCount;
+		this.processes=processes;
 	}
 }

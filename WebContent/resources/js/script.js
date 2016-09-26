@@ -1,8 +1,12 @@
 var names=[];
 var processes = [];
+var country;
 function change(obj){
 	names.push(document.getElementById(obj.name).innerText);
 	processes.push(obj.value);
+}
+function choosecountry(obj){
+	country=obj.value;
 }
 
 $("#updatebutton").click(function(){
@@ -73,6 +77,28 @@ $("#submitMessage").click(function(){
 		},
 		error:function(){
 			alert("留言失败"),
+			window.location.reload();
+		}
+	});
+});
+
+$("#addVisaProcessButton").click(function(){
+	var visaprocess = document.getElementById("visaProcess").value;
+	var description = document.getElementById("description").value;
+	$.ajax({
+		type:"POST",
+		url:'./visasetting/addvisaprocess',
+		data:{
+			"countryname":country,
+			"visaprocess":visaprocess,
+			"description":description,
+		},
+		success:function(){
+			alert("添加成功"),
+			window.location.href="./visasetting";
+		},
+		error:function(){
+			alert("添加失败"),
 			window.location.reload();
 		}
 	});
