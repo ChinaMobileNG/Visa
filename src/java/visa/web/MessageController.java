@@ -7,26 +7,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import visa.data.JdbcComplainRepository;
+import visa.data.JdbcMessageRepository;
 
 @Controller
-@RequestMapping(value="/complain")
-public class ComplainController {
+@RequestMapping(value="/message")
+public class MessageController {
 	
-	private JdbcComplainRepository complainRepository;
+	private JdbcMessageRepository messageRepository;
 	
-	public ComplainController(JdbcComplainRepository complainRepository) {
+	public MessageController(JdbcMessageRepository messageRepository) {
 		// TODO Auto-generated constructor stub
-		this.complainRepository=complainRepository;
+		this.messageRepository=messageRepository;
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String complainPage(Model model){
-		model.addAttribute("items", complainRepository.findAllComplains());
-		return "complain";
+	public String MessagePage(Model model){
+		model.addAttribute("items", messageRepository.findAllMessages());
+		return "message";
 	}
 	
-	@RequestMapping(value="/deletecomplains",method=RequestMethod.POST)
+	@RequestMapping(value="/deletemessages",method=RequestMethod.POST)
 	public String deleteCoplains(HttpServletRequest request){
 		String[] ids = request.getParameterValues("ids");
 		for(int i=0;i<ids.length;i++){
@@ -40,9 +40,9 @@ public class ComplainController {
 				idRange.append(","+ids[i]);
 		}
 		///////$$$$$$$$$$$$$$$$change by qiaoyu
-		String delteSql = "delete from complain where id in ("+idRange.toString()+")";
-		complainRepository.deleteComplainItem(delteSql);
-		return "redirect:/complain";
+		String delteSql = "delete from message where id in ("+idRange.toString()+")";
+		messageRepository.deleteMessage(delteSql);
+		return "redirect:/message";
 	}
 	
 }

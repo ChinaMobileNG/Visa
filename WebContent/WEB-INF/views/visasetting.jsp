@@ -9,9 +9,7 @@
 <html>
 <head>
 	<%
-	
 	request.setCharacterEncoding("utf-8");
-	
 	%>
 	<title>签证进度-大连海之韵国际旅行社</title>
 	<script type="text/javascript" src="<s:url value="/resources/js/libs/jqueryui/1.8.13/jquery-ui.min.js"/>"></script>

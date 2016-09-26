@@ -64,5 +64,10 @@ public class Complain {
 		this.reason=reason;
 		this.id=id;
 	}
-
+	
+	public Complain(String accused,String reason,String details){
+		this.accused=accused;
+		this.details=details;
+		this.reason=reason;
+	}
 }

@@ -1,6 +1,7 @@
 package visa.data;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class JdbcMessageRepository implements MessageRepository {
 	private NamedParameterJdbcOperations namedParameterJdbcOperations;
 	private static final String ADD_MESSAGE="insert into message(messagername,messagerphone,message) "
 			+ " values(:messagername,:messagerphone,:message)";
+	private final String FIND_ALL_MESSAGES="select * from message";
 
 	@Autowired
 	public JdbcMessageRepository(JdbcOperations jdbcOperations,NamedParameterJdbcOperations namedParameterJdbcOperations) {
@@ -36,9 +38,22 @@ public class JdbcMessageRepository implements MessageRepository {
 	}
 
 	@Override
-	public void deleteMessage(Message message) {
+	public void deleteMessage(String sql) {
 		// TODO Auto-generated method stub
+		jdbcOperations.update(sql);
+	}
 
+	@Override
+	public List<Message> findAllMessages() {
+		// TODO Auto-generated method stub
+		return jdbcOperations.query(FIND_ALL_MESSAGES, (resultSet,rowNum)->{
+			String messagername = resultSet.getString("messagername");
+			String messagerphone = resultSet.getString("messagerphone");
+			String message = resultSet.getString("message");
+			int id=resultSet.getInt("id");
+			System.out.println("id="+id);
+			return new Message(messagername,messagerphone,message,id);
+		});
 	}
 
 }

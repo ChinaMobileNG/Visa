@@ -219,7 +219,9 @@
     <h3>留言</h3>
 </div>
 <div class="all">
-    <sf:form id="form" onsubmit="return checkValue()" method="POST" commandName="message">
+	<s:url value="/mymessage/savemessage" var="saveMessage"/>
+    <sf:form id="form" onsubmit="return checkValue()" method="POST" commandName="message" 
+    	action="${saveMessage }">
         <ul>
             <li><span>姓名：</span> 
             	<input class="a" name="messagername" type="text" autocomplete="off" size="30" maxlength="4"
