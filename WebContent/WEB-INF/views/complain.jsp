@@ -55,7 +55,7 @@
 			<li class="current"><a href="#"><img src="img/icons/menu/users.png" alt=""> 微会员管理</a>
 				<ul>
 					<li class="current"><a href="<s:url value="/complain"/>">投诉管理</a></li>
-					<li><a href="messagePage/">留言管理</a></li>
+					<li><a href="<s:url value="/message"/>">留言管理</a></li>
 				</ul>
 			</li>
 		</ul>

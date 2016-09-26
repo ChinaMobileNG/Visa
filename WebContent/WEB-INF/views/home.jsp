@@ -89,7 +89,7 @@
 				<security:authorize access="hasRole('ROLE_ADMIN')">
 				<a  class="shortcut" href="<c:url value="/visaprocess"/>"> <img src="img/page.png" alt="" width="48" height="48"> 签证进度</a>
 				<a href="<c:url value="/visasetting"/>" class="shortcut"> <img src="img/contact.png" alt="" width="48" height="48"> 签证设置</a> 
-				<a href="messagePage/" class="shortcut"> <img src="img/checkin.png" alt="" width="48" height="48"> 留言管理</a> 
+				<a href="<s:url value="/message"/>" class="shortcut"> <img src="img/checkin.png" alt="" width="48" height="48"> 留言管理</a> 
 				<a href="<s:url value="/complain"/>" class="shortcut last"> <img src="img/event.png" alt="" width="48" height="48"> 投诉管理</a>
 				</security:authorize>
 				<security:authorize access="hasRole('TRAVELLER')">

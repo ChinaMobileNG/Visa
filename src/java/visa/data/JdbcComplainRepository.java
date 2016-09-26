@@ -36,7 +36,12 @@ public class JdbcComplainRepository implements ComplainRepository {
 	@Override
 	public void addComplainItem(Complain complain) {
 		// TODO Auto-generated method stub
-
+		String accused=complain.getAccused();
+		String reason=complain.getReason();
+		String details=complain.getDetails();
+		String sql="insert into complain(accused,reason,details)"+
+				" values("+"'"+accused+"'"+","+"'"+reason+"'"+","+"'"+details+"'"+")";
+		jdbcOperations.update(sql);
 	}
 
 	@Override
