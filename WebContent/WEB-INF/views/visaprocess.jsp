@@ -1,3 +1,5 @@
+<%@page import="visa.pojo.Country"%>
+<%@page import="java.util.List"%>
 <%@page import="java.sql.Date"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
@@ -8,6 +10,8 @@
 <html>
 <head>
 	<title>签证进度-大连海之韵国际旅行社</title>
+	<script type="text/javascript">
+	</script>
 	<script type="text/javascript" src="<s:url value="/resources/js/libs/jqueryui/1.8.13/jquery-ui.min.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/resources/js/libs/jquery/1.6/jquery.min.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/resources/js/min.js"/>"></script>
@@ -16,7 +20,8 @@
 	<link type="text/css"  rel="stylesheet" href="<s:url value="/resources/css/min.css"/>"><link>
 	<link type="text/css" rel="stylesheet" href="<s:url value="/resources/css/content/settings/style.css"/>"><link>
 </head>
-<body>
+<body onload="init()">
+<input type="hidden" value="${destinations }" id="destinationsList"/>
 <div id="head">
 <c:url var="logoutUrl" value="/logout"/>
 <form action="${logoutUrl}"
@@ -113,13 +118,15 @@ Hi,<security:authentication property="principal.username"/>
 							</td>
 							<td>
 								<div class="input">
-									<div class="selector" id="uniform-txt5"><select id="txt5" name="destination" style="opacity: 0;">
+									<div class="selector" id="destinationSelector">
+									<select  id="destinationlist1" name="destination" style="opacity:1;">
 										<option value="0">请选择申签国家</option>
 										<option value="China">中国</option>
 										<option value="American">美国</option>
 										<option value="Japan">日本</option>
 										<option value="Thailand">泰国</option>
-									</select></div>
+									</select>
+									</div>
 								</div>
 							</td>
 							<td>
@@ -150,13 +157,15 @@ Hi,<security:authentication property="principal.username"/>
 					<tbody><tr>
 						<td>
 							<div class="input">
-								<div class="selector" id="uniform-idb"><span>请选择申签国家</span><select name="visaCountry" id="idb" style="opacity: 0;">
+								<div class="selector" id="uniform-idb">
+								<select id="destinationlist2" name="visaCountry" id="idb" style="opacity: 0;">
 									<option selected="selected" value="0">请选择申签国家</option>
 									<option value="China">中国</option>
 									<option value="American">美国</option>
 									<option value="Japan">日本</option>
 									<option value="Thailand">泰国</option>
-								</select></div>
+								</select>
+								</div>
 							</div>
 						</td>
 						<td>
@@ -206,7 +215,7 @@ Hi,<security:authentication property="principal.username"/>
 							<th>操作</th>
 						</tr>
 						</thead>
-						<tbody>
+						<tbody id="processlist">
 						<c:forEach items="${travellers}" var="traveller" varStatus="status">
 							<div>
 								<tr>
@@ -221,11 +230,11 @@ Hi,<security:authentication property="principal.username"/>
 										<td>
 											<input type="hidden" value="18" name="rptList:1:hiddenLevel_id">
 											<div class="left">
-												<div class="selector" id="uniform-undefined"><span>流程1</span>
-												<select name="${status.index+1}" style="opacity: 0;" onchange="change(this)">
+												<div class="selector" id="uniform-undefined" style="width:80px !important;">
+												<select name="${status.index+1}" style="opacity: 1;width:80px !important;" onchange="change(this)">
 													<option value="0">请选择进度</option>
 													<option value=1>流程1</option>
-													<option value="2">流程2</option>
+													<option value="2" selected="selected">流程2</option>
 													<option value="3">流程3</option>
 													<option value="9">结束</option>
 												</select>
@@ -237,10 +246,10 @@ Hi,<security:authentication property="principal.username"/>
 										<td>
 											<input type="hidden" value="18" name="rptList:1:hiddenLevel_id">
 											<div class="left">
-												<div class="selector" id="uniform-undefined"><span>流程1</span>
-												<select name="${status.index+1}" style="opacity: 0;" onchange="change(this)">
+												<div class="selector" id="uniform-undefined" style="width:80px !important;">
+												<select name="${status.index+1}" style="opacity:1;width:80px !important;" onchange="change(this)">
 													<option value="0">请选择进度</option>
-													<option value=2>流程2</option>
+													<option value="1" selected="selected">流程2</option>
 													<option value="2">流程2</option>
 													<option value="9">结束</option>
 												</select></div>
@@ -251,12 +260,12 @@ Hi,<security:authentication property="principal.username"/>
 										<td>
 											<input type="hidden" value="18" name="rptList:1:hiddenLevel_id">
 											<div class="left">
-												<div class="selector" id="uniform-undefined"><span>流程1</span>
-												<select name="${status.index+1}" style="opacity: 0;" onchange="change(this)">
+												<div class="selector" id="uniform-undefined" style="width:80px !important;">
+												<select name="${status.index+1}" style="opacity:1;width:80px !important;" onchange="change(this)">
 													<option value="0">请选择进度</option>
-													<option value=4>流程4</option>
+													<option value=1>流程1</option>
 													<option value="2">流程2</option>
-													<option value="3">流程3</option>
+													<option value="3" selected="selected">流程3</option>
 													<option value="4">流程4</option>
 													<option value="9">结束</option>
 												</select></div>
@@ -267,10 +276,10 @@ Hi,<security:authentication property="principal.username"/>
 										<td>
 											<input type="hidden" value="18" name="rptList:1:hiddenLevel_id">
 											<div class="left">
-												<div class="selector" id="uniform-undefined"><span>流程1</span>
-												<select name="${status.index+1}" style="opacity: 0;" onchange="change(this)">
+												<div class="selector" id="uniform-undefined" style="width:80px !important;">
+												<select name="${status.index+1}" style="opacity:1;width:80px !important;" onchange="change(this)">
 													<option value="0">请选择进度</option>
-													<option value=1>流程1</option>
+													<option value=1 selected="selected">流程1</option>
 												</select></div>
 											</div>
 										</td>
@@ -286,9 +295,7 @@ Hi,<security:authentication property="principal.username"/>
 						
 						<tr>
 							<td colspan="11" style="text-align: center;">
-								<div class="submit">
 									<input type="button" value="更新" name="btnUpdateVisaList" id="updatebutton">
-								</div>
 							</td>
 						</tr>
 						</tbody>
@@ -301,6 +308,5 @@ Hi,<security:authentication property="principal.username"/>
 </div>
 <script type="text/javascript" src="<s:url value="/resources/js/script.js"/>">
 </script>
-
 </body>
 </html>

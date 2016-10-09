@@ -48,6 +48,8 @@ public class VisaController {
 		travellers=travellerRepository.findAll();
 		model.addAttribute("travellers", travellers);
 		model.addAttribute("traveller",new Traveller());
+		model.addAttribute("countryCount",visaCountryRepository.getCountryCount());
+		model.addAttribute("destinations", visaCountryRepository.findAllVisaCountryWithAddDate());
 		travellers.stream().forEach(traveller->System.out.println(traveller.getName()+" "
 				+ traveller.getDestination()+" "+traveller.getCurrentStage()+""
 				+ " "+traveller.getMyProcessCount()));
@@ -60,6 +62,20 @@ public class VisaController {
 		return "redirect:/traveller/visaprocess";
 	}
 	
+	@RequestMapping(value="/visaprocess/getInitData",method=RequestMethod.GET)
+	public void getInitData(HttpServletResponse response){
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("countryCount", visaCountryRepository.getCountryCount());
+		jsonObject.put("destinations", visaCountryRepository.findAllVisaCountryWithAddDate());
+		try{
+			PrintWriter printWriter = response.getWriter();
+			printWriter.print(jsonObject);
+			printWriter.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
 	@RequestMapping(value="/visaprocess/updatelist",method=RequestMethod.POST)
 	public void updateList(HttpServletRequest request,HttpServletResponse response){
 		//request.setCharacterEncoding("utf-8");
@@ -70,9 +86,11 @@ public class VisaController {
         	System.out.println(names[i]+" "+Integer.valueOf(processes[i]));
         	travellerRepository.updateTravellerProcess(names[i], Integer.valueOf(processes[i]));
         }
+        List<Traveller> travellers = travellerRepository.findAll();
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("username", names);
 		jsonObject.put("process", processes);
+		jsonObject.put("travellers", travellers);
 		try {
 			PrintWriter printWriter = response.getWriter();
 			printWriter.print(jsonObject);
