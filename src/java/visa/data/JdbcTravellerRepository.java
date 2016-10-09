@@ -47,7 +47,7 @@ public class JdbcTravellerRepository implements TravellerRepository {
 			String phoneNum = resultSet.getString("phonenum");
 			String id = resultSet.getString("id");
 			String destination = resultSet.getString("destination");
-			Date startDate = resultSet.getDate("starttime");
+			java.util.Date startDate = new java.util.Date(resultSet.getDate("starttime").getTime());
 			int currentStage = resultSet.getInt("currentstage");
 			int myProcessCount = visaCountryRepository.getProcessCountByName(destination);
 			return new Traveller(

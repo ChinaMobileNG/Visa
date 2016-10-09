@@ -11,4 +11,5 @@ public interface VisaCountryRepository {
 	void deleteVisaCountryProcess(String process);
 	List<Country> findAllVisaCountryWithAddDate();
 	int getProcessCountByName(String name);
+	int getCountryCount();
 }
