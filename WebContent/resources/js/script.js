@@ -22,7 +22,11 @@ var o = {
 "H+" : this.getHours(), //小时         
 "m+" : this.getMinutes(), //分         
 "s+" : this.getSeconds(), //秒         
+<<<<<<< HEAD
 "q+" : Math.floor((this.getMonth()+3)/3), //季度    
+=======
+"q+" : Math.floor((this.getMonth()+3)/3), //季度         
+>>>>>>> origin/master
 "S" : this.getMilliseconds() //毫秒         
 };         
 var week = {         
@@ -72,12 +76,18 @@ function init(){
 			$.each(destinations,function(i,list){
 				option+="<option value="+list.name+">"+list.name+"</option>";
 			});
+<<<<<<< HEAD
 			if(document.getElementById("destinationlist")!=null){
 				document.getElementById("destinationlist").innerHTML=option;
 			}else{
 				document.getElementById("destinationlist1").innerHTML=option;
 				document.getElementById("destinationlist2").innerHTML=option;
 			}
+=======
+			document.getElementById("destinationlist").innerHTML=option;
+			document.getElementById("destinationlist1").innerHTML=option;
+			document.getElementById("destinationlist2").innerHTML=option;
+>>>>>>> origin/master
 		},
 		error:function(data){
 			//alert("数据获取失败");
@@ -216,6 +226,7 @@ $("#submitMessage").click(function(){
 });
 
 $("#addVisaProcessButton").click(function(){
+<<<<<<< HEAD
 	alert("start add");
 	if(CouponFlow()){
 		var visaprocess = document.getElementById("visaProcess").value;
@@ -254,3 +265,25 @@ function CouponFlow() {
 	}
 	return true;
 }
+=======
+	var visaprocess = document.getElementById("visaProcess").value;
+	var description = document.getElementById("description").value;
+	$.ajax({
+		type:"POST",
+		url:'./visasetting/addvisaprocess',
+		data:{
+			"countryname":country,
+			"visaprocess":visaprocess,
+			"description":description,
+		},
+		success:function(){
+			alert("添加成功"),
+			window.location.href="./visasetting";
+		},
+		error:function(){
+			alert("添加失败"),
+			window.location.reload();
+		}
+	});
+});
+>>>>>>> origin/master

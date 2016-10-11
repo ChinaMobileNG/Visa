@@ -249,7 +249,11 @@ Hi,<security:authentication property="principal.username"/>
 												<div class="selector" id="uniform-undefined" style="width:80px !important;">
 												<select name="${status.index+1}" style="opacity:1;width:80px !important;" onchange="change(this)">
 													<option value="0">请选择进度</option>
+<<<<<<< HEAD
 													<option value="1" selected="selected">流程1</option>
+=======
+													<option value="1" selected="selected">流程2</option>
+>>>>>>> origin/master
 													<option value="2">流程2</option>
 													<option value="9">结束</option>
 												</select></div>
