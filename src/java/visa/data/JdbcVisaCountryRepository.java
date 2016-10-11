@@ -23,6 +23,7 @@ public class JdbcVisaCountryRepository implements VisaCountryRepository {
 	private final String FIND_ALL_VISA_COUNTRY_WITH_ADD_DATE = "select * from country where process = 0";
 	private final String GET_VISA_COUNTRY_PROCESS_COUNT="select count(1) from country where countryname = ?";
 	private final String DELTE_VISA_COUNTRY_BY_NAME="delete from country where countryname = ?";
+	private final String GET_COUNTRY_COUNT="select count(distinct countryname) from country";
 	
 	
 	@Autowired
@@ -93,6 +94,12 @@ public class JdbcVisaCountryRepository implements VisaCountryRepository {
 	public int getProcessCountByName(String name) {
 		// TODO Auto-generated method stub
 		return jdbcOperations.queryForObject(GET_VISA_COUNTRY_PROCESS_COUNT, Integer.class, name);
+	}
+
+	@Override
+	public int getCountryCount() {
+		// TODO Auto-generated method stub
+		return jdbcOperations.queryForObject(GET_COUNTRY_COUNT, Integer.class);
 	}
 
 }

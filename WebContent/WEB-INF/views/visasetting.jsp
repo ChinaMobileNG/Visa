@@ -58,7 +58,7 @@
 		/*]]>*/
 	</style>
 </head>
-<body>
+<body onload="init()">
 <!-- HEAD -->
 <div id="head">
 	<div class="left">
@@ -151,7 +151,7 @@
 						<tr>
 							<td class="neutral">
 							<div class="selector" style="width:70px"  id="uniform-undefined" ><span>流程1</span>
-								<select name="countryselector" style="opacity: 0;" onchange="choosecountry(this)">
+								<select id="destinationlist" name="countryselector" style="opacity: 0;" onchange="choosecountry(this)">
 									<option value="NOCOUNTRY">选择国家</option>
 									<option value="China">中国</option>
 									<option value="American">美国</option>
@@ -180,7 +180,7 @@
 	</form>
 	
 	<s:url value="/visasetting/addvisacountry" var="addVisaCountry"/>
-	<form method="post" action="${addVisaCountry }">
+	<form onsubmit="return Coupontype()" method="post" action="${addVisaCountry }">
 	<div class="bloc left" style="margin-top:20px">
 			<div class="title">添加签证种类<a href="#" class="toggle"></a></div>
 			<div class="content">
